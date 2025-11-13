@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace MinuEpood
 {
@@ -14,6 +15,58 @@ namespace MinuEpood
         public Form1()
         {
             InitializeComponent();
+            NaitaAndmed();
+            NaitaKategooria();
+        }
+
+        private void pood_btn_Click(object sender, EventArgs e)
+        {
+            kategooriad = new TabControl();
+            kategooriad.Name = "Kategooriad";
+            kategooriad.Width = 450;
+            kategooriad.Height = Height;
+            kategooriad.Location = new System.Drawing.Point(900, 0);
+            connection.Open();
+            adapter_kat = new SqlDataAdapter("SELECT Id, kategooria_nimetus FROM Kategooriatabel", connection);
+            DataTable dt_kat = new DataTable();
+            adapter_kat.Fill(dt_kat);
+            ImageList iconsList = new ImageList();
+            iconsList.ColorDepth = ColorDepth.Depth32Bit;
+            iconsList.ImageSize = new Size(25, 25);
+            int i = 0;
+            foreach (DataRow nimetus in dt_kat.Rows)
+            {
+                kategooriad.TabPages.Add((string)nimetus["Kategooria_nimetus"]);
+                kategooriad.TabPages[i].ImageIndex = i;
+                i++;
+                int kat_id = Convert.ToInt32(nimetus["Id"]);
+                fail_list = Failid_KatId(kat_id);
+                int r = 0;
+                int c = 0;
+                foreach (var fail in fail_list)
+                {
+                    pictureBox = new PictureBox();
+                    pictureBox.Image = Image.FromFile(@"..\..\img" + fail);
+                    pictureBox.Width = pictureBox.Height = 100;
+                    pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBox.Location = new System.Drawing.Point(c, r);
+                    c = c + 100 + 2;
+                    kategooriad.TabPages[i - 1].Controls.Add(pictureBox);
+                }
+            }
+
+            kategooriad.ImageList = iconsList;
+            connection.Close();
+            this.Controls.Add(kategooriad);
+        }
+
+        private void puh_btn_Click(object sender, EventArgs e)
+        {
+            toode_txt.Text = "";
+            kogus_txt.Text = "";
+            hind_txt.Text = "";
+            kat_box.SelectedItem = "";
+            using (Fi)
         }
 
         private void NaitaAndmed()
@@ -43,7 +96,7 @@ namespace MinuEpood
                 }
             }
             dataGridView1.Columns.Add(combo_kat);
-            toodePB.Image = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\img"), "snack1.png"));
+            toodePB.Image = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\..\img"), "Lidl.jpg"));
             connection.Close();
         }
         Form popupFrom;
@@ -223,13 +276,30 @@ namespace MinuEpood
                 MessageBox.Show("Vali toode, mida kustutada soovid!");
             }
         }
-        private void puh_btn_Click(object sender, EventArgs e)
+
+        int Id = 0;
+        private void uuenda_btn_Click(object sender, EventArgs e)
         {
-            toode_txt.Text = "";
-            kogus_txt.Text = "";
-            hind_txt.Text = "";
-            kat_box.SelectedItem = "";
-            using (Fi)
+            if (toode_txt.Text != "" && kogus_txt.Text != "" && hind_txt.Text != "" && toodePB.Image != null)
+            {
+                command = new SqlCommand("UPDATE Toodetabel SET Toodenimetus=@toode, Kogus=@kogus, Hind=@hind, Pilt=@pilt, Bpilt=@bpilt WHERE Id=@id", connection);
+                connection.Open();
+                command.Parameters.AddWithValue("@Id", Id);
+                command.Parameters.AddWithValue("@toode", toode_txt.Text);
+                command.Parameters.AddWithValue("@kogus", kogus_txt.Text);
+                command.Parameters.AddWithValue("@hind", hind_txt.Text.Replace(",", "."));
+                string pilt = dataGridView1.SelectedRows[0].Cells["Pilt"].Value.ToString();
+                string file_pilt = toode_txt.Text + extension;
+                command.Parameters.AddWithValue("@pilt", file_pilt);
+                command.ExecuteNonQuery();
+                connection.Close();
+                NaitaAndmed();
+                MessageBox.Show("Toode uuendatu d!");
+            }
+            else
+            {
+                MessageBox.Show("Palun täida kõik väljad!");
+            }
         }
     }
 }

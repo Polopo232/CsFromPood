@@ -154,6 +154,7 @@
             uuenda_btn.TabIndex = 10;
             uuenda_btn.Text = "Uuenda";
             uuenda_btn.UseVisualStyleBackColor = true;
+            uuenda_btn.Click += uuenda_btn_Click;
             // 
             // kus_btn
             // 
@@ -172,7 +173,6 @@
             puh_btn.TabIndex = 12;
             puh_btn.Text = "Puhasta";
             puh_btn.UseVisualStyleBackColor = true;
-            puh_btn.Click += puh_btn_Click;
             // 
             // button7
             // 
