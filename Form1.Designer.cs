@@ -144,6 +144,7 @@
             lisa_btn.TabIndex = 9;
             lisa_btn.Text = "Lisa";
             lisa_btn.UseVisualStyleBackColor = true;
+            lisa_btn.Click += lisa_btn_Click;
             // 
             // uuenda_btn
             // 
