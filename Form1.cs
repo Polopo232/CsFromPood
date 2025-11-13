@@ -5,7 +5,7 @@ namespace MinuEpood
 {
     public partial class Form1 : Form
     {
-        SqlConnection connection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\opilane\source\repos\MinuEpood\Database1.mdf;Integrated Security=True");
+        SqlConnection connection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\opilane\source\repos\CsFromPood\epoodbase.mdf;Integrated Security=True");
 
         SqlCommand command;
 
@@ -16,28 +16,124 @@ namespace MinuEpood
             InitializeComponent();
         }
 
+        private void NaitaAndmed()
+        {
+            connection.Open();
+            DataTable dt_toode = new DataTable();
+            adapter_toode = new SqlDataAdapter(
+                "SELECT Toodetabel.Id, Toodetabel.Toodenimetus, Toodetabel.Kogus, " +
+                "Toodetabel.Hind, Toodetabel.Pilt, Toodetabel.Bpilt, " +
+                "Kategooriatabel.Kategooria_nimetus AS Kategooria_nimetus " +
+                "FROM Toodetabel " +
+                "INNER JOIN Kategooriatabel ON Toodetabel.Kategooriad = Kategooriatabel.Id", connection);
+
+            adapter_toode.Fill(dt_toode);
+            dataGridView1.Columns.Clear();
+            dataGridView1.DataSource = dt_toode;
+            DataGridViewComboBoxColumn combo_kat = new DataGridViewComboBoxColumn();
+            combo_kat.DataPropertyName = "Kategooria_nimetus";
+            HashSet<string> keys = new HashSet<string>();
+            foreach (DataRow item in dt_toode.Rows)
+            {
+                string kat_n = item["Kategooria_nimetus"].ToString();
+                if (!keys.Contains(kat_n))
+                {
+                    keys.Add(kat_n);
+                    combo_kat.Items.Add(kat_n);
+                }
+            }
+            dataGridView1.Columns.Add(combo_kat);
+            toodePB.Image = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\img"), "snack1.png"));
+            connection.Close();
+        }
+        Form popupFrom;
+        private void Loopilt(Image image, int r)
+        {
+            popupFrom = new Form();
+            popupFrom.FormBorderStyle = FormBorderStyle.None;
+            popupFrom.StartPosition = FormStartPosition.Manual;
+            popupFrom.Size = new Size(200, 200);
+
+            PictureBox pb = new PictureBox();
+            pb.Image = image;
+            pb.Dock = DockStyle.Fill;
+            pb.SizeMode = PictureBoxSizeMode.Zoom;
+
+            popupFrom.Controls.Add(pb);
+
+            System.Drawing.Rectangle cellRectangle = dataGridView1.GetCellDisplayRectangle(4, r, true);
+            System.Drawing.Point point = dataGridView1.PointToScreen(cellRectangle.Location);
+
+            popupFrom.Location = new System.Drawing.Point(point.X + cellRectangle.Width, point.Y);
+            popupFrom.Show();
+        }
         private void NaitaKategooria()
         {
             connection.Open();
-            adapter_kat = new SqlDataAdapter("SELECT Id, Kategooria_nimetus FROM Kategooria_table", connection);
+            adapter_kat = new SqlDataAdapter("SELECT Id, Kategooria_nimetus FROM Kategooriatabel", connection);
             DataTable dt_kat = new DataTable();
             adapter_kat.Fill(dt_kat);
+
+            kat_box.Items.Clear();
+
             foreach (DataRow row in dt_kat.Rows)
             {
-                if (!kat_box.Items.Contains(row["Kategooria_nimetus"]))
-                {
-                    kat_box.Items.Add(row["Kategooria_nimetus"]);
-                }
-
-                else
-                {
-                    command = new SqlCommand("DELETE FROM Kategooria_table WHERE Id=@id", connection);
-                }
-
+                kat_box.Items.Add(row["Kategooria_nimetus"].ToString());
             }
+
             connection.Close();
         }
 
+        byte[] imageData;
+        private void dataGridView1_CellMouseEnter1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex >= 4 && e.RowIndex >= 0)
+            {
+                imageData = dataGridView1.Rows[e.RowIndex].Cells["Bpilt"].Value as byte[];
+                if (imageData != null)
+                {
+                    using (MemoryStream ms = new MemoryStream(imageData))
+                    {
+                        Image img = Image.FromStream(ms);
+                        Loopilt(img, e.RowIndex);
+                    }
+                }
+            }
+        }
+        private void lisa_btn_Click(object sender, EventArgs e)
+        {
+            if (toode_txt.Text.Trim() != string.Empty &&
+                kogus_txt.Text.Trim() != string.Empty &&
+                hind_txt.Text.Trim() != string.Empty && kat_box.SelectedItem != null)
+            {
+                try
+                {
+                    connection.Open();
+                    command = new SqlCommand("SELECT Id FROM Kategooriatabel WHERE Kategooria_nimetus=@kat", connection);
+                    command.Parameters.AddWithValue("@kat", kat_box.Text);
+                    command.ExecuteNonQuery();
+                    var Id = Convert.ToInt32(command.ExecuteScalar());
+                    command = new SqlCommand("INSERT INTO Toodetabel (Toodenimetus, Kogus, Hind, Pilt, Bpilt, Kategooriad) " +
+                        "VALUES (@toode, @kogus, @hind, @pilt, @bpilt, @kat)", connection);
+                    command.Parameters.AddWithValue("@toode", toode_txt.Text);
+                    command.Parameters.AddWithValue("@kogus", kogus_txt.Text);
+                    command.Parameters.AddWithValue("@hind", hind_txt.Text);
+                    extension = Path.GetExtension(open.FileName);
+                    command.Parameters.AddWithValue("@pilt", toode_txt.Text + extension);
+                    imageData = File.ReadAllBytes(open.FileName);
+                    command.Parameters.AddWithValue("@bpilt", imageData);
+                    command.Parameters.AddWithValue("@kat", Id);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    NaitaAndmed();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    connection.Close();
+                }
+            }
+        }
         private void lisa_kat_btn_Click(object sender, EventArgs e)
         {
             bool on = false;
@@ -51,7 +147,7 @@ namespace MinuEpood
             }
             if (on == false)
             {
-                command = new SqlCommand("INSERT INTO Kategooria_table (Kategooria_nimetus) VALUES (@kat)", connection);
+                command = new SqlCommand("INSERT INTO Kategooriatabel (Kategooria_nimetus) VALUES (@kat)", connection);
                 connection.Open();
                 command.Parameters.AddWithValue("@kat", kat_box.Text);
                 command.ExecuteNonQuery();
@@ -65,14 +161,13 @@ namespace MinuEpood
                 MessageBox.Show("Kategooria on juba olemas või väli on tühi!");
             }
         }
-
         private void kus_kat_btn_Click(object sender, EventArgs e)
         {
             if (kat_box.SelectedItem != null)
             {
                 connection.Open();
                 string kal_val = kat_box.SelectedItem.ToString();
-                command = new SqlCommand("DELETE FROM Kategooria_table WHERE Kategooria_nimetus=@kat", connection);
+                command = new SqlCommand("DELETE FROM Kategooriatabel WHERE Kategooria_nimetus=@kat", connection);
                 command.Parameters.AddWithValue("@kat", kal_val);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -108,6 +203,33 @@ namespace MinuEpood
             {
                 MessageBox.Show("Toode puudub!");
             }
+        }
+        private void kus_btn_Click(object sender, EventArgs e)
+        {
+            var Id = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["Id"].Value);
+            MessageBox.Show(Id.ToString());
+            if (Id != 0)
+            {
+                command = new SqlCommand("DELETE FROM Toode_table WHERE Id=@id", connection);
+                connection.Open();
+                command.Parameters.AddWithValue("@id", Id);
+                command.ExecuteNonQuery();
+                connection.Close();
+
+                NaitaAndmed();
+            }
+            else
+            {
+                MessageBox.Show("Vali toode, mida kustutada soovid!");
+            }
+        }
+        private void puh_btn_Click(object sender, EventArgs e)
+        {
+            toode_txt.Text = "";
+            kogus_txt.Text = "";
+            hind_txt.Text = "";
+            kat_box.SelectedItem = "";
+            using (Fi)
         }
     }
 }

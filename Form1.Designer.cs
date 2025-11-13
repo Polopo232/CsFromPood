@@ -171,6 +171,7 @@
             puh_btn.TabIndex = 12;
             puh_btn.Text = "Puhasta";
             puh_btn.UseVisualStyleBackColor = true;
+            puh_btn.Click += puh_btn_Click;
             // 
             // button7
             // 
