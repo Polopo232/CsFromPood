@@ -51,9 +51,26 @@
             textBox4 = new TextBox();
             kat_box = new ComboBox();
             dataGridView1 = new DataGridView();
+            cartList = new ListBox();
             ((System.ComponentModel.ISupportInitialize)toodePB).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
+            //
+            //
+            // Panels for admin and client
+            adminPanel = new Panel();
+            adminPanel.Location = new Point(10, 10);
+            adminPanel.Size = new Size(450, 325);
+            adminPanel.BackColor = Color.Transparent;
+            Controls.Add(adminPanel);
+
+            clientPanel = new Panel();
+            clientPanel.Location = new Point(10, 10);
+            clientPanel.Size = new Size(450, 330);
+            clientPanel.BackColor = Color.Transparent;
+            clientPanel.Visible = false;
+            Controls.Add(clientPanel);
+
             // 
             // label1
             // 
@@ -183,6 +200,7 @@
             button7.TabIndex = 13;
             button7.Text = "Maluta";
             button7.UseVisualStyleBackColor = true;
+            button7.Click += maluta_btn_Click;
             // 
             // otsifail_btn
             // 
@@ -206,21 +224,23 @@
             // 
             // valin
             // 
-            button10.Location = new Point(589, 277);
+            button10.Location = new Point(850, 565);
             button10.Name = "button10";
             button10.Size = new Size(75, 23);
             button10.TabIndex = 16;
             button10.Text = "Valin";
             button10.UseVisualStyleBackColor = true;
+            button10.Click += valin_btn_Click;
             // 
             // ostan
             // 
-            button11.Location = new Point(670, 277);
+            button11.Location = new Point(955, 565);
             button11.Name = "button11";
             button11.Size = new Size(75, 23);
             button11.TabIndex = 17;
             button11.Text = "Ostan";
             button11.UseVisualStyleBackColor = true;
+            button11.Click += ostan_btn_Click;
             // 
             // saada arve
             // 
@@ -245,6 +265,7 @@
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(156, 23);
             textBox4.TabIndex = 20;
+            
             // 
             // kat_box
             // 
@@ -253,6 +274,14 @@
             kat_box.Name = "kat_box";
             kat_box.Size = new Size(164, 23);
             kat_box.TabIndex = 21;
+            //
+            // cartList
+            //
+            cartList = new ListBox();
+            cartList.Location = new Point(850, 335);
+            cartList.Size = new Size(280, 240);
+            cartList.Name = "cartList";
+
             // 
             // dataGridView1
             // 
@@ -269,30 +298,33 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ScrollBar;
-            ClientSize = new Size(933, 587);
+            ClientSize = new Size(1140, 610);
+
             Controls.Add(dataGridView1);
-            Controls.Add(kat_box);
+            adminPanel.Controls.Add(kat_box);
             Controls.Add(textBox4);
             Controls.Add(toodePB);
             Controls.Add(button12);
-            Controls.Add(button11);
-            Controls.Add(button10);
+            clientPanel.Controls.Add(button10);
+            clientPanel.Controls.Add(button11);
             Controls.Add(button9);
-            Controls.Add(otsifail_btn);
+            adminPanel.Controls.Add(otsifail_btn);
             Controls.Add(button7);
-            Controls.Add(puh_btn);
-            Controls.Add(kus_btn);
-            Controls.Add(uuenda_btn);
-            Controls.Add(lisa_btn);
-            Controls.Add(kus_kat_btn);
-            Controls.Add(lisa_kat_btn);
-            Controls.Add(hind_txt);
-            Controls.Add(toode_txt);
-            Controls.Add(kogus_txt);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            adminPanel.Controls.Add(puh_btn);
+            adminPanel.Controls.Add(uuenda_btn);
+            adminPanel.Controls.Add(kus_btn);
+            adminPanel.Controls.Add(lisa_btn);
+            adminPanel.Controls.Add(lisa_kat_btn);
+            adminPanel.Controls.Add(kus_kat_btn);
+            adminPanel.Controls.Add(hind_txt);
+            adminPanel.Controls.Add(toode_txt);
+            adminPanel.Controls.Add(kogus_txt);
+            adminPanel.Controls.Add(label1);
+            adminPanel.Controls.Add(label2);
+            adminPanel.Controls.Add(label3);
+            adminPanel.Controls.Add(label4);
+            clientPanel.Controls.Add(cartList);
+
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)toodePB).EndInit();
@@ -325,6 +357,9 @@
         private PictureBox toodePB;
         private TextBox textBox4;
         private ComboBox kat_box;
+        private ListBox cartList;
+        private Panel adminPanel;
+        private Panel clientPanel;
         private DataGridView dataGridView1;
     }
 }

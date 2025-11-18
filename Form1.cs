@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -20,6 +20,80 @@ namespace MinuEpood
             NaitaKategooria();
         }
 
+        private void maluta_btn_Click(object sender, EventArgs e)
+        {
+            SwitchMode();
+        }
+
+
+        bool isAdmin = true;
+
+        private void SwitchMode()
+        {
+            isAdmin = !isAdmin;
+
+            adminPanel.Visible = isAdmin;
+            clientPanel.Visible = !isAdmin;
+
+            // Admin mode
+            if (isAdmin)
+            {
+                cartList.Visible = false;
+                button10.Visible = false;
+                button11.Visible = false;
+            }
+            // Client mode
+            else
+            {
+                cartList.Visible = true;
+                button10.Visible = true;
+                button11.Visible = true;
+            }
+        }
+
+        private double UpdateCartTotal()
+        {
+            double total = 0;
+
+            foreach (var item in cartList.Items)
+            {
+                string[] parts = item.ToString().Split(" - ");
+                double price = Convert.ToDouble(parts[1].Replace("€", ""));
+                total += price;
+            }
+
+            return total;
+        }
+        private void ostan_btn_Click(object sender, EventArgs e)
+        {
+            if (cartList.Items.Count == 0)
+            {
+                MessageBox.Show("Korv on tühi!");
+                return;
+            }
+
+            double total = UpdateCartTotal();
+
+            MessageBox.Show($"Aitäh ostu eest!\nKokku: {total}€");
+
+            cartList.Items.Clear();
+        }
+        private void valin_btn_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vali toode!");
+                return;
+            }
+
+            var row = dataGridView1.SelectedRows[0];
+            string name = row.Cells["Toodenimetus"].Value.ToString();
+            double price = Convert.ToDouble(row.Cells["Hind"].Value);
+
+            cartList.Items.Add($"{name} - {price}€");
+
+            UpdateCartTotal();
+        }
         private void pood_btn_Click(object sender, EventArgs e)
         {
             this.Size = new Size(1360, 650);
@@ -66,12 +140,6 @@ namespace MinuEpood
             connection.Close();
             this.Controls.Add(kategooriad);
         }
-
-        private void find_but_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Otsingufunktsioon pole veel valmis!");
-        }
-
         private void puh_btn_Click(object sender, EventArgs e)
         {
             toode_txt.Text = "";
@@ -188,7 +256,6 @@ namespace MinuEpood
                 Loopilt(image, e.RowIndex);
             }
         }
-
         private void dataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
         {
             if (popupFrom != null && !popupFrom.IsDisposed)
@@ -196,7 +263,6 @@ namespace MinuEpood
                 popupFrom.Close();
             }
         }
-
         private void lisa_btn_Click(object sender, EventArgs e)
         {
             if (toode_txt.Text.Trim() != string.Empty &&
@@ -255,7 +321,7 @@ namespace MinuEpood
             }
             else
             {
-                MessageBox.Show("Kategooria on juba olemas v�i v�li on t�hi!");
+                MessageBox.Show("Kategooria on juba olemas või väli on tühi!");
             }
         }
         private void kus_kat_btn_Click(object sender, EventArgs e)
@@ -342,7 +408,7 @@ namespace MinuEpood
             }
             else
             {
-                MessageBox.Show("Palun t�ida k�ik v�ljad!");
+                MessageBox.Show("Palun täida kõik väljad!");
             }
         }
     }
