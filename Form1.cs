@@ -1,6 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace MinuEpood
 {
@@ -21,7 +22,8 @@ namespace MinuEpood
 
         private void pood_btn_Click(object sender, EventArgs e)
         {
-            kategooriad = new TabControl();
+            this.Size = new Size(1360, 650);
+            TabControl kategooriad = new TabControl();
             kategooriad.Name = "Kategooriad";
             kategooriad.Width = 450;
             kategooriad.Height = Height;
@@ -34,19 +36,24 @@ namespace MinuEpood
             iconsList.ColorDepth = ColorDepth.Depth32Bit;
             iconsList.ImageSize = new Size(25, 25);
             int i = 0;
-            foreach (DataRow nimetus in dt_kat.Rows)
+            foreach (DataRow row in dt_kat.Rows)
             {
-                kategooriad.TabPages.Add((string)nimetus["Kategooria_nimetus"]);
+                string name = row["kategooria_nimetus"].ToString();
+
+                iconsList.Images.Add(SystemIcons.Application);
+
+                kategooriad.TabPages.Add(name);
                 kategooriad.TabPages[i].ImageIndex = i;
+
                 i++;
-                int kat_id = Convert.ToInt32(nimetus["Id"]);
-                fail_list = Failid_KatId(kat_id);
+                int kat_id = Convert.ToInt32(row["Id"]);
+                var fail_list = Failid_KatId(kat_id);
                 int r = 0;
                 int c = 0;
                 foreach (var fail in fail_list)
-                {
-                    pictureBox = new PictureBox();
-                    pictureBox.Image = Image.FromFile(@"..\..\img" + fail);
+                {   
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Image = Image.FromFile(Path.Combine(@"..\..\..\img", fail));
                     pictureBox.Width = pictureBox.Height = 100;
                     pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                     pictureBox.Location = new System.Drawing.Point(c, r);
@@ -60,15 +67,44 @@ namespace MinuEpood
             this.Controls.Add(kategooriad);
         }
 
+        private void find_but_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Otsingufunktsioon pole veel valmis!");
+        }
+
         private void puh_btn_Click(object sender, EventArgs e)
         {
             toode_txt.Text = "";
             kogus_txt.Text = "";
             hind_txt.Text = "";
             kat_box.SelectedItem = "";
-            using (Fi)
+            using (FileStream fs = new FileStream(Path.Combine(Path.GetFullPath(@"..\..\Images"), "peacock.png"), FileMode.Open, FileAccess.Read))
+            {
+                toodePB.Image = Image.FromStream(fs);
+            }
         }
+        private List<string> Failid_KatId(int katId)
+        {
+            List<string> failid = new List<string>();
 
+            string query = "SELECT Pilt FROM Toodetabel WHERE Kategooriad = @katId";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@katId", katId);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                if (reader["Pilt"] != DBNull.Value)
+                {
+                    failid.Add(reader["Pilt"].ToString());
+                }
+            }
+
+            reader.Close();
+
+            return failid;
+        }
         private void NaitaAndmed()
         {
             connection.Open();
@@ -136,23 +172,31 @@ namespace MinuEpood
 
             connection.Close();
         }
-
         byte[] imageData;
         private void dataGridView1_CellMouseEnter1(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex >= 4 && e.RowIndex >= 0)
+            if (e.RowIndex < 0 || e.ColumnIndex < 4)
+                return;
+
+            var imageData = dataGridView1.Rows[e.RowIndex].Cells["Bpilt"].Value as byte[];
+            if (imageData == null)
+                return;
+
+            using (MemoryStream stream = new MemoryStream(imageData))
             {
-                imageData = dataGridView1.Rows[e.RowIndex].Cells["Bpilt"].Value as byte[];
-                if (imageData != null)
-                {
-                    using (MemoryStream ms = new MemoryStream(imageData))
-                    {
-                        Image img = Image.FromStream(ms);
-                        Loopilt(img, e.RowIndex);
-                    }
-                }
+                var image = Image.FromStream(stream);
+                Loopilt(image, e.RowIndex);
             }
         }
+
+        private void dataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (popupFrom != null && !popupFrom.IsDisposed)
+            {
+                popupFrom.Close();
+            }
+        }
+
         private void lisa_btn_Click(object sender, EventArgs e)
         {
             if (toode_txt.Text.Trim() != string.Empty &&

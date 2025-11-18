@@ -173,8 +173,9 @@
             puh_btn.TabIndex = 12;
             puh_btn.Text = "Puhasta";
             puh_btn.UseVisualStyleBackColor = true;
+            puh_btn.Click += puh_btn_Click;
             // 
-            // button7
+            // maluta button
             // 
             button7.Location = new Point(463, 306);
             button7.Name = "button7";
@@ -193,7 +194,7 @@
             otsifail_btn.UseVisualStyleBackColor = true;
             otsifail_btn.Click += otsifail_btn_Click;
             // 
-            // button9
+            // Pood
             // 
             button9.Location = new Point(589, 305);
             button9.Name = "button9";
@@ -201,8 +202,9 @@
             button9.TabIndex = 15;
             button9.Text = "Pood";
             button9.UseVisualStyleBackColor = true;
+            button9.Click += pood_btn_Click;
             // 
-            // button10
+            // valin
             // 
             button10.Location = new Point(589, 277);
             button10.Name = "button10";
@@ -211,7 +213,7 @@
             button10.Text = "Valin";
             button10.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // ostan
             // 
             button11.Location = new Point(670, 277);
             button11.Name = "button11";
@@ -220,7 +222,7 @@
             button11.Text = "Ostan";
             button11.UseVisualStyleBackColor = true;
             // 
-            // button12
+            // saada arve
             // 
             button12.Location = new Point(751, 277);
             button12.Name = "button12";
@@ -259,6 +261,8 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(712, 240);
             dataGridView1.TabIndex = 22;
+            dataGridView1.CellMouseEnter += dataGridView1_CellMouseEnter1;
+            dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             // 
             // Form1
             // 
