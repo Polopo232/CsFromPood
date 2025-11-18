@@ -19,38 +19,6 @@ namespace MinuEpood
             NaitaAndmed();
             NaitaKategooria();
         }
-
-        private void maluta_btn_Click(object sender, EventArgs e)
-        {
-            SwitchMode();
-        }
-
-
-        bool isAdmin = true;
-
-        private void SwitchMode()
-        {
-            isAdmin = !isAdmin;
-
-            adminPanel.Visible = isAdmin;
-            clientPanel.Visible = !isAdmin;
-
-            // Admin mode
-            if (isAdmin)
-            {
-                cartList.Visible = false;
-                button10.Visible = false;
-                button11.Visible = false;
-            }
-            // Client mode
-            else
-            {
-                cartList.Visible = true;
-                button10.Visible = true;
-                button11.Visible = true;
-            }
-        }
-
         private double UpdateCartTotal()
         {
             double total = 0;

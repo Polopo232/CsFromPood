@@ -58,18 +58,6 @@
             //
             //
             // Panels for admin and client
-            adminPanel = new Panel();
-            adminPanel.Location = new Point(10, 10);
-            adminPanel.Size = new Size(450, 300);
-            adminPanel.BackColor = Color.Transparent;
-            Controls.Add(adminPanel);
-
-            clientPanel = new Panel();
-            clientPanel.Location = new Point(10, 10);
-            clientPanel.Size = new Size(450, 330);
-            clientPanel.BackColor = Color.Transparent;
-            clientPanel.Visible = false;
-            Controls.Add(clientPanel);
 
             // 
             // label1
@@ -135,7 +123,7 @@
             // 
             // lisa_kat_btn
             // 
-            lisa_kat_btn.Location = new Point(155, 230);
+            lisa_kat_btn.Location = new Point(100, 230);
             lisa_kat_btn.Name = "lisa_kat_btn";
             lisa_kat_btn.Size = new Size(118, 23);
             lisa_kat_btn.TabIndex = 7;
@@ -145,7 +133,7 @@
             // 
             // kus_kat_btn
             // 
-            kus_kat_btn.Location = new Point(279, 230);
+            kus_kat_btn.Location = new Point(220, 230);
             kus_kat_btn.Name = "kus_kat_btn";
             kus_kat_btn.Size = new Size(117, 23);
             kus_kat_btn.TabIndex = 8;
@@ -176,7 +164,7 @@
             // kus_btn
             // 
             kus_btn.Location = new Point(230, 260);
-            kus_btn.Name = "kus_btn";
+            kus_btn.Name = "kus_btn";   
             kus_btn.Size = new Size(75, 23);
             kus_btn.TabIndex = 11;
             kus_btn.Text = "Kastuta";
@@ -301,29 +289,29 @@
             ClientSize = new Size(1140, 610);
 
             Controls.Add(dataGridView1);
-            adminPanel.Controls.Add(kat_box);
+            Controls.Add(kat_box);
             Controls.Add(textBox4);
             Controls.Add(toodePB);
             Controls.Add(button12);
-            clientPanel.Controls.Add(button10);
-            clientPanel.Controls.Add(button11);
+            Controls.Add(button10);
+            Controls.Add(button11);
             Controls.Add(button9);
-            adminPanel.Controls.Add(otsifail_btn);
+            Controls.Add(otsifail_btn);
             Controls.Add(button7);
-            adminPanel.Controls.Add(puh_btn);
-            adminPanel.Controls.Add(uuenda_btn);
-            adminPanel.Controls.Add(kus_btn);
-            adminPanel.Controls.Add(lisa_btn);
-            adminPanel.Controls.Add(lisa_kat_btn);
-            adminPanel.Controls.Add(kus_kat_btn);
-            adminPanel.Controls.Add(hind_txt);
-            adminPanel.Controls.Add(toode_txt);
-            adminPanel.Controls.Add(kogus_txt);
-            adminPanel.Controls.Add(label1);
-            adminPanel.Controls.Add(label2);
-            adminPanel.Controls.Add(label3);
-            adminPanel.Controls.Add(label4);
-            clientPanel.Controls.Add(cartList);
+            Controls.Add(puh_btn);
+            Controls.Add(uuenda_btn);
+            Controls.Add(kus_btn);
+            Controls.Add(lisa_btn);
+            Controls.Add(lisa_kat_btn);
+            Controls.Add(kus_kat_btn);
+            Controls.Add(hind_txt);
+            Controls.Add(toode_txt);
+            Controls.Add(kogus_txt);
+            Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(label3);
+            Controls.Add(label4);
+            Controls.Add(cartList);
 
             Name = "Form1";
             Text = "Form1";
@@ -358,8 +346,6 @@
         private TextBox textBox4;
         private ComboBox kat_box;
         private ListBox cartList;
-        private Panel adminPanel;
-        private Panel clientPanel;
         private DataGridView dataGridView1;
     }
 }
