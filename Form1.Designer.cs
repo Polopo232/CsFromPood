@@ -60,7 +60,7 @@
             // Panels for admin and client
             adminPanel = new Panel();
             adminPanel.Location = new Point(10, 10);
-            adminPanel.Size = new Size(450, 325);
+            adminPanel.Size = new Size(450, 300);
             adminPanel.BackColor = Color.Transparent;
             Controls.Add(adminPanel);
 
@@ -135,7 +135,7 @@
             // 
             // lisa_kat_btn
             // 
-            lisa_kat_btn.Location = new Point(155, 277);
+            lisa_kat_btn.Location = new Point(155, 230);
             lisa_kat_btn.Name = "lisa_kat_btn";
             lisa_kat_btn.Size = new Size(118, 23);
             lisa_kat_btn.TabIndex = 7;
@@ -145,7 +145,7 @@
             // 
             // kus_kat_btn
             // 
-            kus_kat_btn.Location = new Point(279, 277);
+            kus_kat_btn.Location = new Point(279, 230);
             kus_kat_btn.Name = "kus_kat_btn";
             kus_kat_btn.Size = new Size(117, 23);
             kus_kat_btn.TabIndex = 8;
@@ -155,7 +155,7 @@
             // 
             // lisa_btn
             // 
-            lisa_btn.Location = new Point(117, 306);
+            lisa_btn.Location = new Point(70, 260);
             lisa_btn.Name = "lisa_btn";
             lisa_btn.Size = new Size(75, 23);
             lisa_btn.TabIndex = 9;
@@ -165,7 +165,7 @@
             // 
             // uuenda_btn
             // 
-            uuenda_btn.Location = new Point(198, 305);
+            uuenda_btn.Location = new Point(150, 260);
             uuenda_btn.Name = "uuenda_btn";
             uuenda_btn.Size = new Size(75, 23);
             uuenda_btn.TabIndex = 10;
@@ -175,7 +175,7 @@
             // 
             // kus_btn
             // 
-            kus_btn.Location = new Point(279, 305);
+            kus_btn.Location = new Point(230, 260);
             kus_btn.Name = "kus_btn";
             kus_btn.Size = new Size(75, 23);
             kus_btn.TabIndex = 11;
@@ -184,7 +184,7 @@
             // 
             // puh_btn
             // 
-            puh_btn.Location = new Point(360, 305);
+            puh_btn.Location = new Point(310, 260);
             puh_btn.Name = "puh_btn";
             puh_btn.Size = new Size(75, 23);
             puh_btn.TabIndex = 12;
