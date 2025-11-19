@@ -1,0 +1,18 @@
+﻿CREATE TABLE [dbo].[Kategooriatabel]
+(
+	[Id] INT NOT NULL PRIMARY KEY identity(1,1), 
+    [Kategooria_nimetus] VARCHAR(50) NULL, 
+    [Kirjeldus] TEXT NULL
+)
+
+CREATE TABLE [dbo].[Toodetabel] (
+    [Id]           INT             IDENTITY (1, 1) NOT NULL,
+    [Toodenimetus] VARCHAR (50)    NULL,
+    [Kogus]        INT             NULL,
+    [Hind]         FLOAT (53)      NULL,
+    [Pilt]         TEXT            NULL,
+    [Bpilt]        VARBINARY (MAX) NULL,
+    [Kategooriad]  INT             NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
