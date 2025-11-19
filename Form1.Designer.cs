@@ -273,13 +273,14 @@
             cartList.Name = "cartList";
             cartList.Size = new Size(280, 229);
             cartList.TabIndex = 23;
+
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ScrollBar;
-            ClientSize = new Size(870, 610);
+            ClientSize = new Size(930, 610);
             Controls.Add(dataGridView1);
             Controls.Add(button9);
             Controls.Add(toodePB);
@@ -311,6 +312,7 @@
             PerformLayout();
         }
 
+
         #endregion
 
         private Label label1;
@@ -329,8 +331,6 @@
         private Button button7;
         private Button otsifail_btn;
         private Button button9;
-        private Button button10;
-        private Button button11;
         private Button button12;
         private PictureBox toodePB;
         private TextBox textBox4;

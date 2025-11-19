@@ -23,6 +23,8 @@ namespace MinuEpood
             NaitaKategooria();
         }
 
+
+
         private void StartMessageBox()
         {
             DialogResult start_quest = MessageBox.Show("Lülita sisse halduri režiim?", "Küsimus", MessageBoxButtons.YesNo);
@@ -62,7 +64,6 @@ namespace MinuEpood
                 label4.Visible = false;
             }
         }
-
         private double UpdateCartTotal()
         {
             double total = 0;
@@ -76,6 +77,7 @@ namespace MinuEpood
 
             return total;
         }
+
         private void ostan_btn_Click(object sender, EventArgs e)
         {
             if (cartList.Items.Count == 0)
@@ -99,13 +101,17 @@ namespace MinuEpood
             }
 
             var row = dataGridView1.SelectedRows[0];
+            int id = Convert.ToInt32(row.Cells["Id"].Value);
             string name = row.Cells["Toodenimetus"].Value.ToString();
             double price = Convert.ToDouble(row.Cells["Hind"].Value);
 
-            cartList.Items.Add($"{name} - {price}€");
+            ListViewItem item = new ListViewItem(name);
+            item.SubItems.Add(price + "€");
+            item.Tag = id;
 
-            UpdateCartTotal();
+            cartList.Items.Add($"{name} - {price}€");
         }
+
         private void pood_btn_Click(object sender, EventArgs e)
         {
             this.Size = new Size(1365, 660);
