@@ -44,8 +44,8 @@
             button7 = new Button();
             otsifail_btn = new Button();
             button9 = new Button();
-            button10 = new Button();
-            button11 = new Button();
+            valin_btn = new Button();
+            ostan_btn = new Button();
             button12 = new Button();
             toodePB = new PictureBox();
             textBox4 = new TextBox();
@@ -55,10 +55,6 @@
             ((System.ComponentModel.ISupportInitialize)toodePB).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
-            //
-            //
-            // Panels for admin and client
-
             // 
             // label1
             // 
@@ -164,7 +160,7 @@
             // kus_btn
             // 
             kus_btn.Location = new Point(230, 260);
-            kus_btn.Name = "kus_btn";   
+            kus_btn.Name = "kus_btn";
             kus_btn.Size = new Size(75, 23);
             kus_btn.TabIndex = 11;
             kus_btn.Text = "Kastuta";
@@ -180,7 +176,7 @@
             puh_btn.UseVisualStyleBackColor = true;
             puh_btn.Click += puh_btn_Click;
             // 
-            // maluta button
+            // button7
             // 
             button7.Location = new Point(463, 306);
             button7.Name = "button7";
@@ -188,11 +184,10 @@
             button7.TabIndex = 13;
             button7.Text = "Maluta";
             button7.UseVisualStyleBackColor = true;
-            button7.Click += maluta_btn_Click;
             // 
             // otsifail_btn
             // 
-            otsifail_btn.Location = new Point(463, 277);
+            otsifail_btn.Location = new Point(185, 289);
             otsifail_btn.Name = "otsifail_btn";
             otsifail_btn.Size = new Size(75, 23);
             otsifail_btn.TabIndex = 14;
@@ -200,7 +195,7 @@
             otsifail_btn.UseVisualStyleBackColor = true;
             otsifail_btn.Click += otsifail_btn_Click;
             // 
-            // Pood
+            // button9
             // 
             button9.Location = new Point(589, 305);
             button9.Name = "button9";
@@ -210,27 +205,27 @@
             button9.UseVisualStyleBackColor = true;
             button9.Click += pood_btn_Click;
             // 
-            // valin
+            // valin_btn
             // 
-            button10.Location = new Point(850, 565);
-            button10.Name = "button10";
-            button10.Size = new Size(75, 23);
-            button10.TabIndex = 16;
-            button10.Text = "Valin";
-            button10.UseVisualStyleBackColor = true;
-            button10.Click += valin_btn_Click;
+            valin_btn.Location = new Point(114, 265);
+            valin_btn.Name = "valin_btn";
+            valin_btn.Size = new Size(75, 23);
+            valin_btn.TabIndex = 16;
+            valin_btn.Text = "Valin";
+            valin_btn.UseVisualStyleBackColor = true;
+            valin_btn.Click += valin_btn_Click;
             // 
-            // ostan
+            // ostan_btn
             // 
-            button11.Location = new Point(955, 565);
-            button11.Name = "button11";
-            button11.Size = new Size(75, 23);
-            button11.TabIndex = 17;
-            button11.Text = "Ostan";
-            button11.UseVisualStyleBackColor = true;
-            button11.Click += ostan_btn_Click;
+            ostan_btn.Location = new Point(195, 265);
+            ostan_btn.Name = "ostan_btn";
+            ostan_btn.Size = new Size(75, 23);
+            ostan_btn.TabIndex = 17;
+            ostan_btn.Text = "Ostan";
+            ostan_btn.UseVisualStyleBackColor = true;
+            ostan_btn.Click += ostan_btn_Click;
             // 
-            // saada arve
+            // button12
             // 
             button12.Location = new Point(751, 277);
             button12.Name = "button12";
@@ -253,7 +248,6 @@
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(156, 23);
             textBox4.TabIndex = 20;
-            
             // 
             // kat_box
             // 
@@ -262,14 +256,6 @@
             kat_box.Name = "kat_box";
             kat_box.Size = new Size(164, 23);
             kat_box.TabIndex = 21;
-            //
-            // cartList
-            //
-            cartList = new ListBox();
-            cartList.Location = new Point(850, 335);
-            cartList.Size = new Size(280, 240);
-            cartList.Name = "cartList";
-
             // 
             // dataGridView1
             // 
@@ -281,23 +267,28 @@
             dataGridView1.CellMouseEnter += dataGridView1_CellMouseEnter1;
             dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             // 
+            // cartList
+            // 
+            cartList.Location = new Point(100, 30);
+            cartList.Name = "cartList";
+            cartList.Size = new Size(280, 229);
+            cartList.TabIndex = 23;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ScrollBar;
-            ClientSize = new Size(1140, 610);
-
+            ClientSize = new Size(870, 610);
             Controls.Add(dataGridView1);
+            Controls.Add(button9);
+            Controls.Add(toodePB);
             Controls.Add(kat_box);
             Controls.Add(textBox4);
-            Controls.Add(toodePB);
             Controls.Add(button12);
-            Controls.Add(button10);
-            Controls.Add(button11);
-            Controls.Add(button9);
+            Controls.Add(valin_btn);
+            Controls.Add(ostan_btn);
             Controls.Add(otsifail_btn);
-            Controls.Add(button7);
             Controls.Add(puh_btn);
             Controls.Add(uuenda_btn);
             Controls.Add(kus_btn);
@@ -312,7 +303,6 @@
             Controls.Add(label3);
             Controls.Add(label4);
             Controls.Add(cartList);
-
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)toodePB).EndInit();
@@ -347,5 +337,7 @@
         private ComboBox kat_box;
         private ListBox cartList;
         private DataGridView dataGridView1;
+        private Button valin_btn;
+        private Button ostan_btn;
     }
 }

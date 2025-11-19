@@ -7,18 +7,62 @@ namespace MinuEpood
 {
     public partial class Form1 : Form
     {
-        SqlConnection connection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\opilane\source\repos\CsFromPood\epoodbase.mdf;Integrated Security=True");
+        SqlConnection connection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\opilane\source\repos\CsFromPood\Database1.mdf;Integrated Security=True");
 
         SqlCommand command;
 
         SqlDataAdapter adapter_toode, adapter_kat;
 
+        public bool managerSwitch = false;
+
         public Form1()
         {
             InitializeComponent();
+            StartMessageBox();
             NaitaAndmed();
             NaitaKategooria();
         }
+
+        private void StartMessageBox()
+        {
+            DialogResult start_quest = MessageBox.Show("Lülita sisse halduri režiim?", "Küsimus", MessageBoxButtons.YesNo);
+
+            if (start_quest == DialogResult.Yes)
+            {
+                managerSwitch = true;
+            }
+            else
+            {
+                managerSwitch = false;
+            }
+
+            if (managerSwitch)
+            {
+                cartList.Visible = false;
+                valin_btn.Visible = false;
+                ostan_btn.Visible = false;
+            }
+            if (!managerSwitch)
+            {
+                kat_box.Visible = true;
+                kat_box.Visible = false;
+                otsifail_btn.Visible = false;
+                puh_btn.Visible = false;
+                uuenda_btn.Visible = false;
+                kus_btn.Visible = false;
+                lisa_btn.Visible = false;
+                lisa_kat_btn.Visible = false;
+                kus_kat_btn.Visible = false;
+                hind_txt.Visible = false;
+                toode_txt.Visible = false;
+                kogus_txt.Visible = false;
+                label1.Visible = false;
+                label2.Visible = false;
+                label3.Visible = false;
+                label4.Visible = false;
+            }
+        }
+
         private double UpdateCartTotal()
         {
             double total = 0;
@@ -64,7 +108,7 @@ namespace MinuEpood
         }
         private void pood_btn_Click(object sender, EventArgs e)
         {
-            this.Size = new Size(1360, 650);
+            this.Size = new Size(1365, 660);
             TabControl kategooriad = new TabControl();
             kategooriad.Name = "Kategooriad";
             kategooriad.Width = 450;
