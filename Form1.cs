@@ -68,10 +68,10 @@ namespace MinuEpood
         {
             double total = 0;
 
-            foreach (var item in cartList.Items)
+            foreach (ListViewItem item in cartList.Items)
             {
-                string[] parts = item.ToString().Split(" - ");
-                double price = Convert.ToDouble(parts[1].Replace("€", ""));
+                string priceStr = item.SubItems[1].Text.Replace("€", "");
+                double price = Convert.ToDouble(priceStr);
                 total += price;
             }
 
@@ -86,11 +86,26 @@ namespace MinuEpood
                 return;
             }
 
-            double total = UpdateCartTotal();
+            double total = 0;
+            connection.Open();
+            foreach (ListViewItem item in cartList.Items)
+            {
+                int id = (int)item.Tag;
+                int quantityToBuy = 1;
+                double price = Convert.ToDouble(item.SubItems[1].Text.Replace("€", ""));
+                total += price;
+
+                SqlCommand cmd = new SqlCommand("UPDATE Toodetabel SET Kogus = Kogus - @qty WHERE Id = @id", connection);
+                cmd.Parameters.AddWithValue("@qty", quantityToBuy);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+            connection.Close();
 
             MessageBox.Show($"Aitäh ostu eest!\nKokku: {total}€");
 
             cartList.Items.Clear();
+            NaitaAndmed();
         }
         private void valin_btn_Click(object sender, EventArgs e)
         {
@@ -109,9 +124,8 @@ namespace MinuEpood
             item.SubItems.Add(price + "€");
             item.Tag = id;
 
-            cartList.Items.Add($"{name} - {price}€");
+            cartList.Items.Add(item);
         }
-
         private void pood_btn_Click(object sender, EventArgs e)
         {
             this.Size = new Size(1365, 660);
@@ -356,7 +370,6 @@ namespace MinuEpood
                 NaitaKategooria();
             }
         }
-
         SaveFileDialog save;
         OpenFileDialog open;
         string extension = null;
