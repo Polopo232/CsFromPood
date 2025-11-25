@@ -88,25 +88,33 @@ namespace MinuEpood
 
             double total = 0;
             connection.Open();
+
             foreach (ListViewItem item in cartList.Items)
             {
                 int id = (int)item.Tag;
-                int quantityToBuy = 1;
                 double price = Convert.ToDouble(item.SubItems[1].Text.Replace("€", ""));
+                int qty = (int)item.SubItems[1].Tag;
+
                 total += price;
 
-                SqlCommand cmd = new SqlCommand("UPDATE Toodetabel SET Kogus = Kogus - @qty WHERE Id = @id", connection);
-                cmd.Parameters.AddWithValue("@qty", quantityToBuy);
+                SqlCommand cmd = new SqlCommand(
+                    "UPDATE Toodetabel SET Kogus = Kogus - @qty WHERE Id = @id",
+                    connection);
+
+                cmd.Parameters.AddWithValue("@qty", qty);
                 cmd.Parameters.AddWithValue("@id", id);
+
                 cmd.ExecuteNonQuery();
             }
+
             connection.Close();
 
-            MessageBox.Show($"Aitäh ostu eest!\nKokku: {total}€");
+            MessageBox.Show($"Aitäh ostu eest! Kokku: {total}€");
 
             cartList.Items.Clear();
             NaitaAndmed();
         }
+
         private void valin_btn_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 0)
@@ -116,16 +124,40 @@ namespace MinuEpood
             }
 
             var row = dataGridView1.SelectedRows[0];
+
             int id = Convert.ToInt32(row.Cells["Id"].Value);
             string name = row.Cells["Toodenimetus"].Value.ToString();
             double price = Convert.ToDouble(row.Cells["Hind"].Value);
 
-            ListViewItem item = new ListViewItem(name);
-            item.SubItems.Add(price + "€");
+            foreach (ListViewItem it in cartList.Items)
+            {
+                if ((int)it.Tag == id)
+                {
+                    int qty = (int)it.SubItems[1].Tag + 1;
+                    it.SubItems[1].Tag = qty;
+
+                    double newTotal = qty * price;
+
+                    it.SubItems[0].Text = $"{name} (x{qty})";
+                    it.SubItems[1].Text = newTotal + "€";
+
+                    return;
+                }
+            }
+
+            CartItem item = new CartItem($"{name} (x1)");
+
+            // цена
+            var priceSubItem = new ListViewItem.ListViewSubItem();
+            priceSubItem.Text = price + "€";
+            priceSubItem.Tag = 1;
+            item.SubItems.Add(priceSubItem);
+
             item.Tag = id;
 
             cartList.Items.Add(item);
         }
+
         private void pood_btn_Click(object sender, EventArgs e)
         {
             this.Size = new Size(1365, 660);
@@ -157,7 +189,7 @@ namespace MinuEpood
                 int r = 0;
                 int c = 0;
                 foreach (var fail in fail_list)
-                {   
+                {
                     PictureBox pictureBox = new PictureBox();
                     pictureBox.Image = Image.FromFile(Path.Combine(@"..\..\..\img", fail));
                     pictureBox.Width = pictureBox.Height = 100;

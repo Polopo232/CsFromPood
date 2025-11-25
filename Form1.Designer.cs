@@ -273,7 +273,6 @@
             cartList.Name = "cartList";
             cartList.Size = new Size(280, 229);
             cartList.TabIndex = 23;
-
             // 
             // Form1
             // 
